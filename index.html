@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Motion Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f6f7ff 0%, #f0f4ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .entry-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            min-height: 550px;
+        }
+
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-section::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .brand-section::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .brand-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-section p {
+            opacity: 0.9;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .services-list {
+            margin-top: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .service-tag {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            margin: 0 8px 12px 0;
+            font-size: 14px;
+        }
+
+        .action-section {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .action-section h2 {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .action-section p {
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+
+        .entry-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .entry-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 25px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: var(--secondary);
+            border: 2px solid var(--gray-light);
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .entry-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .entry-btn i {
+            font-size: 24px;
+        }
+
+        .btn-client {
+            background-color: rgba(99, 102, 241, 0.05);
+            border-color: var(--primary);
+        }
+
+        .btn-client i {
+            color: var(--primary);
+        }
+
+        .btn-client:hover {
+            border-color: var(--primary-dark);
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-register {
+            background-color: rgba(16, 185, 129, 0.05);
+            border-color: var(--accent);
+        }
+
+        .btn-register i {
+            color: var(--accent);
+        }
+
+        .btn-register:hover {
+            border-color: #0da271;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-visitor {
+            background-color: white;
+        }
+
+        .btn-visitor i {
+            color: var(--gray);
+        }
+
+        .btn-visitor:hover {
+            border-color: var(--gray);
+        }
+
+        .guest-note {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gray);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        @media (max-width: 768px) {
+            .entry-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .brand-section, .action-section {
+                padding: 40px 30px;
+            }
+            
+            .brand-section {
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="entry-container">
+        <!-- Brand/Info Section -->
+        <div class="brand-section">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i> Motion Tech
+            </a>
+            <h1>Innovative Software Solutions</h1>
+            <p>We specialize in developing cutting-edge web applications, desktop software, AI models, and mobile apps that transform businesses.</p>
+            
+            <div class="services-list">
+                <span class="service-tag">Web Apps</span>
+                <span class="service-tag">Desktop Apps</span>
+                <span class="service-tag">AI Models</span>
+                <span class="service-tag">Mobile Apps</span>
+                <span class="service-tag">Cloud Solutions</span>
+                <span class="service-tag">UI/UX Design</span>
+            </div>
+        </div>
+        
+        <!-- Action Section -->
+        <div class="action-section">
+            <h2>Welcome to Motion Tech</h2>
+            <p>Please choose how you'd like to proceed:</p>
+            
+            <div class="entry-buttons">
+                <a href="login.html" class="entry-btn btn-client">
+                    <div>
+                        <h3>Client Login</h3>
+                        <p style="font-weight: normal; font-size: 14px; color: var(--gray); margin-top: 5px;">
+                            Existing clients access your dashboard
+                        </p>
+                    </div>
+                    <i class="fas fa-sign-in-alt"></i>
+                </a>
+                
+                <a href="register.html" class="entry-btn btn-register">
+                    <div>
+                        <h3>Create Account</h3>
+                        <p style="font-weight: normal; font-size: 14px; color: var(--gray); margin-top: 5px;">
+                            New clients register for an account
+                        </p>
+                    </div>
+                    <i class="fas fa-user-plus"></i>
+                </a>
+                
+                <a href="main.html" class="entry-btn btn-visitor">
+                    <div>
+                        <h3>Continue as Visitor</h3>
+                        <p style="font-weight: normal; font-size: 14px; color: var(--gray); margin-top: 5px;">
+                            Explore our website and services
+                        </p>
+                    </div>
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            
+            <div class="guest-note">
+                <p>Registered clients can access project dashboards, support tickets, and collaboration tools.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Optional: Add session storage to remember visitor choice
+        document.querySelector('.btn-visitor').addEventListener('click', function(e) {
+            // Store that user chose visitor access
+            sessionStorage.setItem('motionTechAccess', 'visitor');
+        });
+        
+        document.querySelector('.btn-client').addEventListener('click', function(e) {
+            // Store that user is attempting to login
+            sessionStorage.setItem('motionTechAccess', 'client');
+        });
+        
+        document.querySelector('.btn-register').addEventListener('click', function(e) {
+            // Store that user is registering
+            sessionStorage.setItem('motionTechAccess', 'registering');
+        });
+        
+        // Optional: Check if returning from successful registration
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('registered') === 'true') {
+                // Show a subtle success message
+                const actionSection = document.querySelector('.action-section p');
+                const originalText = actionSection.textContent;
+                actionSection.innerHTML = `<span style="color: var(--accent); font-weight: 600;">✓ Registration successful!</span><br>${originalText}`;
+                
+                // Remove the URL parameter
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+    </script>
+</body>
+</html>

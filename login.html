@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Tech | Client Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background animation */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Back to main site link */
+        .back-link {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-link:hover {
+            color: #00ffff;
+            transform: translateX(-5px);
+        }
+
+        /* Logo/brand */
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .brand-logo a {
+            font-size: 36px;
+            font-weight: 700;
+            color: #00ffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .brand-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        /* Main form container */
+        .form-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Info panel */
+        .info-panel {
+            flex: 1;
+            padding: 50px 40px;
+            background: rgba(0, 0, 0, 0.3);
+            border-right: 1px solid rgba(0, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-panel h2 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .info-panel p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .features {
+            margin-top: 30px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .feature i {
+            color: #00ffff;
+            margin-right: 15px;
+            font-size: 18px;
+            width: 24px;
+        }
+
+        /* Glass form */
+        .glass-form {
+            flex: 1;
+            padding: 50px 40px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(0, 255, 255, 0.6);
+            box-shadow:
+                0 0 15px rgba(0, 255, 255, 0.6),
+                0 0 30px rgba(0, 255, 255, 0.4),
+                inset 0 0 15px rgba(0, 255, 255, 0.3);
+            color: #fff;
+            animation: glowPulse 3s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            from {
+                box-shadow: 
+                    0 0 10px rgba(0, 255, 255, 0.4),
+                    0 0 20px rgba(0, 255, 255, 0.3),
+                    inset 0 0 10px rgba(0, 255, 255, 0.2);
+            }
+            to {
+                box-shadow: 
+                    0 0 20px rgba(0, 255, 255, 0.9),
+                    0 0 40px rgba(0, 255, 255, 0.6),
+                    inset 0 0 15px rgba(0, 255, 255, 0.4);
+            }
+        }
+
+        .glass-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #00ffff;
+        }
+
+        /* FLOATING LABEL GROUP */
+        .field {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 16px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .field input::placeholder {
+            color: transparent;
+        }
+
+        .field label {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            pointer-events: none;
+            transition: 0.3s ease;
+            background: transparent;
+            padding: 0 4px;
+        }
+
+        /* FLOAT EFFECT */
+        .field input:focus + label,
+        .field input:not(:placeholder-shown) + label {
+            top: -10px;
+            font-size: 13px;
+            color: #00ffff;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0 8px;
+            border-radius: 4px;
+        }
+
+        /* INPUT FOCUS ANIMATION */
+        .field input:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Form options */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .remember input {
+            margin-right: 8px;
+            accent-color: #00ffff;
+        }
+
+        .forgot-password {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+
+        /* Buttons */
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: #00ffff;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 2px solid #00ffff;
+            transition: 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 25px #00ffff;
+            transform: translateY(-2px);
+        }
+
+        .visitor-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: 0.3s ease;
+        }
+
+        .visitor-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .form-wrapper {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .info-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            }
+            
+            .back-link {
+                top: 15px;
+                left: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glass-form, .info-panel {
+                padding: 30px 20px;
+            }
+            
+            .brand-logo a {
+                font-size: 28px;
+            }
+        }
+        /* Add error message styling */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to main site -->
+    <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Motion Tech
+    </a>
+
+    <div class="login-container">
+        <!-- Brand logo -->
+        <div class="brand-logo">
+            <a href="index.html">
+                <i class="fas fa-bolt"></i> Motion Tech
+            </a>
+            <p>Client Portal</p>
+        </div>
+
+        <div class="form-wrapper">
+            <!-- Info Panel -->
+            <div class="info-panel">
+                <h2>Welcome Back</h2>
+                <p>Access your Motion Tech client dashboard to manage projects, track progress, and collaborate with our development team.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Enterprise-grade security</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Real-time project tracking</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-file-code"></i>
+                        <span>Development milestones</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-headset"></i>
+                        <span>24/7 dedicated support</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Glass Form -->
+            <form class="glass-form" id="loginForm">
+                <h2><i class="fas fa-sign-in-alt"></i> CLIENT LOGIN</h2>
+                
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i> Invalid username or password
+                </div>
+                
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Login successful! Redirecting...
+                </div>
+
+                <div class="field">
+                    <input type="text" id="username" required placeholder=" ">
+                    <label>Username or Email</label>
+                </div>
+
+                <div class="field">
+                    <input type="password" id="password" required placeholder=" ">
+                    <label>Password</label>
+                </div>
+
+                <div class="form-options">
+                    <div class="remember">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-lock"></i> SIGN IN
+                    </button>
+                    <button type="button" id="visitorBtn" class="visitor-btn">
+                        <i class="fas fa-eye"></i> CONTINUE AS VISITOR
+                    </button>
+                </div>
+
+                <div class="form-footer">
+                    <p>Need access? <a href="index.html#contact">Contact our team</a></p>
+                    <p style="margin-top: 10px;">Don't have an account? <a href="register.html">Register here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ========================
+        // CONNECT TO REGISTRATION
+        // ========================
+        
+        // Check URL parameters for registration success
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user just registered
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('registered') === 'true') {
+                // Show registration success message
+                showSuccess('Account created successfully! You can now login.');
+                
+                // Auto-fill username if available
+                const newlyRegisteredUser = localStorage.getItem('newlyRegisteredUser');
+                if(newlyRegisteredUser) {
+                    document.getElementById('username').value = newlyRegisteredUser;
+                    document.getElementById('username').dispatchEvent(new Event('input'));
+                    localStorage.removeItem('newlyRegisteredUser');
+                }
+                
+                // Remove the URL parameter
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+
+        // ========================
+        // USER DATABASE FUNCTIONS
+        // ========================
+        
+        // Get existing users from localStorage
+        function getUserDatabase() {
+            const storedUsers = localStorage.getItem('motionTechUsers');
+            const defaultUsers = [
+                {
+                    id: 1,
+                    username: "admin",
+                    email: "admin@motiontech.com",
+                    password: "admin123",
+                    name: "System Administrator",
+                    role: "admin",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    username: "demo",
+                    email: "demo@motiontech.com",
+                    password: "demo123",
+                    name: "Demo Client",
+                    role: "client",
+                    company: "Demo Corp",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            
+            if(storedUsers) {
+                return JSON.parse(storedUsers);
+            } else {
+                localStorage.setItem('motionTechUsers', JSON.stringify(defaultUsers));
+                return defaultUsers;
+            }
+        }
+        
+        // Function to validate user credentials
+        function authenticateUser(username, password) {
+            const users = getUserDatabase();
+            const inputUsername = username.toLowerCase().trim();
+            
+            // Check if user exists in database
+            const user = users.find(user => 
+                (user.username.toLowerCase() === inputUsername || 
+                 user.email.toLowerCase() === inputUsername) && 
+                user.password === password
+            );
+            
+            return user || null;
+        }
+        
+        // ========================
+        // UI HELPER FUNCTIONS
+        // ========================
+        
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            errorEl.classList.add('show');
+            
+            setTimeout(() => {
+                errorEl.classList.remove('show');
+            }, 5000);
+        }
+        
+        function showSuccess(message) {
+            const successEl = document.getElementById('successMessage');
+            successEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            successEl.classList.add('show');
+        }
+        
+        // After successful login
+        function handleLoginSuccess(user) {
+            // Store user session data
+            localStorage.setItem('motionTechAuth', 'true');
+            localStorage.setItem('motionTechUser', JSON.stringify({
+                id: user.id,
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                company: user.company || ''
+            }));
+            
+            // Show success message
+            showSuccess(`Welcome back, ${user.name}!`);
+            
+            // Get redirect URL or default to main.html
+            const redirectUrl = sessionStorage.getItem('redirectAfterLogin') || 'main.html';
+            
+            // Clear redirect storage
+            sessionStorage.removeItem('redirectAfterLogin');
+            
+            // Update button to show success
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> LOGIN SUCCESSFUL!';
+            submitBtn.style.background = '#10b981';
+            submitBtn.style.borderColor = '#10b981';
+            submitBtn.style.color = 'white';
+            submitBtn.disabled = true;
+            
+            // Hide error message if visible
+            document.getElementById('errorMessage').classList.remove('show');
+            
+            // Redirect after delay
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 2000);
+        }
+        
+        // ========================
+        // FORM EVENT HANDLERS
+        // ========================
+        
+        // Fix for floating labels
+        document.querySelectorAll('.field input').forEach(input => {
+            input.setAttribute('placeholder', ' ');
+            
+            if (input.value) {
+                input.dispatchEvent(new Event('input'));
+            }
+        });
+        
+        // Add visitor access option
+        function allowVisitorAccess() {
+            localStorage.setItem('motionTechAuth', 'visitor');
+            
+            const visitorBtn = document.getElementById('visitorBtn');
+            visitorBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> REDIRECTING...';
+            visitorBtn.disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = 'main.html';
+            }, 1000);
+        }
+        
+        // Login form submit handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Clear any previous error messages
+            document.getElementById('errorMessage').classList.remove('show');
+            
+            // Validate inputs
+            if(!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AUTHENTICATING...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Authenticate user
+                const authenticatedUser = authenticateUser(username, password);
+                
+                if(authenticatedUser) {
+                    // Login successful
+                    handleLoginSuccess(authenticatedUser);
+                } else {
+                    // Login failed
+                    showError('Invalid username or password. Please try again.');
+                    
+                    // Reset button
+                    submitBtn.innerHTML = '<i class="fas fa-lock"></i> SIGN IN';
+                    submitBtn.disabled = false;
+                    
+                    // Clear password field
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                    
+                    // Shake animation on form
+                    document.querySelector('.glass-form').style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        document.querySelector('.glass-form').style.animation = '';
+                    }, 500);
+                }
+            }, 1500);
+        });
+        
+        // Visitor button handler
+        document.getElementById('visitorBtn').addEventListener('click', function() {
+            allowVisitorAccess();
+        });
+        
+        // Forgot password handler
+        document.querySelector('.forgot-password').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = prompt('Enter your registered email address:');
+            
+            if (email) {
+                // Check if email exists in database
+                const users = getUserDatabase();
+                const user = users.find(user => 
+                    user.email.toLowerCase() === email.toLowerCase().trim()
+                );
+                
+                if(user) {
+                    alert(`Password reset link sent to ${email}\n\nDemo: Your password is "${user.password}"`);
+                } else {
+                    alert(`No account found with email: ${email}`);
+                }
+            }
+        });
+        
+        // Enter key support
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.submit-btn').click();
+            }
+        });
+        
+        // Clear error message when user starts typing
+        document.getElementById('username').addEventListener('input', function() {
+            document.getElementById('errorMessage').classList.remove('show');
+        });
+        
+        document.getElementById('password').addEventListener('input', function() {
+            document.getElementById('errorMessage').classList.remove('show');
+        });
+        
+        // "Remember me" functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const rememberCheckbox = document.getElementById('remember');
+            const usernameField = document.getElementById('username');
+            
+            // Check if we have saved credentials
+            const savedUsername = localStorage.getItem('motionTechRememberUsername');
+            if(savedUsername && rememberCheckbox) {
+                usernameField.value = savedUsername;
+                rememberCheckbox.checked = true;
+                
+                // Trigger the floating label effect
+                usernameField.dispatchEvent(new Event('input'));
+            }
+            
+            // Save username when "Remember me" is checked
+            if(rememberCheckbox) {
+                rememberCheckbox.addEventListener('change', function() {
+                    if(this.checked && usernameField.value) {
+                        localStorage.setItem('motionTechRememberUsername', usernameField.value);
+                    } else {
+                        localStorage.removeItem('motionTechRememberUsername');
+                    }
+                });
+            }
+            
+            // Auto-save username when typing if "Remember me" is checked
+            usernameField.addEventListener('input', function() {
+                if(rememberCheckbox && rememberCheckbox.checked && this.value) {
+                    localStorage.setItem('motionTechRememberUsername', this.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

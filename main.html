@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Tech | Modern Software Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary);
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 8px;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 160px;
+            padding-bottom: 100px;
+            background: linear-gradient(135deg, #f6f7ff 0%, #f0f4ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0) 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: var(--radius);
+            background-color: white;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element i {
+            font-size: 40px;
+            color: var(--primary);
+        }
+
+        .element-1 {
+            top: 0;
+            right: 40px;
+            width: 120px;
+            height: 120px;
+            animation-delay: 0s;
+        }
+
+        .element-2 {
+            top: 150px;
+            right: 180px;
+            width: 160px;
+            height: 160px;
+            animation-delay: 2s;
+        }
+
+        .element-3 {
+            top: 40px;
+            right: 300px;
+            width: 100px;
+            height: 100px;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Services Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 40px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid var(--gray-light);
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+
+        .service-icon i {
+            font-size: 36px;
+            color: var(--primary);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* About Section */
+        .about {
+            background-color: #f8fafc;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .about-visual {
+            position: relative;
+            height: 400px;
+        }
+
+        .visual-card {
+            position: absolute;
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-1 {
+            top: 0;
+            right: 0;
+            width: 70%;
+            z-index: 3;
+        }
+
+        .card-2 {
+            bottom: 0;
+            left: 0;
+            width: 70%;
+            z-index: 2;
+        }
+
+        .card-3 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .cta .btn {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .cta .btn:hover {
+            background-color: var(--light);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 80px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: white;
+        }
+
+        .footer-links a {
+            display: block;
+            color: var(--gray);
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-col p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Visitor Info Banner */
+        .visitor-banner {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            animation: slideIn 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 300px;
+        }
+
+        .visitor-banner i {
+            font-size: 20px;
+        }
+
+        .visitor-banner .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: auto;
+            padding: 0 5px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-content, .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .visitor-banner {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding-top: 140px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.3rem;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Visitor Info Banner (will be shown if visitor) -->
+    <div id="visitorBanner" class="visitor-banner" style="display: none;">
+        <i class="fas fa-eye"></i>
+        <span>You're browsing as a visitor</span>
+        <button class="close-btn" onclick="closeVisitorBanner()">&times;</button>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bolt"></i> Motion Tech
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                
+                <!-- Dynamic button based on authentication status -->
+                <span id="authButtonContainer">
+                    <a href="login.html" class="btn" style="padding: 8px 20px; font-size: 14px;">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </span>
+            </nav>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Transforming Ideas Into <span style="color: var(--primary);">Digital Solutions</span></h1>
+                    <p>Motion Tech is a cutting-edge software development company specializing in creating innovative web, desktop, mobile applications and AI models that drive business growth and enhance user experiences.</p>
+                    <div class="hero-btns">
+                        <a href="#services" class="btn">Our Services</a>
+                        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="floating-element element-1">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="floating-element element-2">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="floating-element element-3">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Core Services</h2>
+                <p>We deliver comprehensive software solutions tailored to your business needs, leveraging the latest technologies and industry best practices.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Web Apps</h3>
+                    <p>Responsive, scalable web applications built with modern frameworks that provide exceptional user experiences across all devices.</p>
+                    <a href="#contact" class="btn btn-outline" style="padding: 10px 24px; font-size: 14px;">Learn More</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h3>Desktop Apps</h3>
+                    <p>Powerful cross-platform desktop applications with native performance and seamless integration with operating systems.</p>
+                    <a href="#contact" class="btn btn-outline" style="padding: 10px 24px; font-size: 14px;">Learn More</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Models</h3>
+                    <p>Custom AI and machine learning models that analyze data, automate processes, and provide intelligent insights for your business.</p>
+                    <a href="#contact" class="btn btn-outline" style="padding: 10px 24px; font-size: 14px;">Learn More</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Apps</h3>
+                    <p>Engaging iOS and Android applications designed with intuitive interfaces and built for performance and scalability.</p>
+                    <a href="#contact" class="btn btn-outline" style="padding: 10px 24px; font-size: 14px;">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Why Choose Motion Tech?</h2>
+                    <p>We combine technical expertise with creative thinking to deliver software solutions that not only meet but exceed expectations. Our agile development process ensures timely delivery and adaptability to changing requirements.</p>
+                    <p>With a team of experienced developers, designers, and AI specialists, we transform complex challenges into elegant, user-friendly solutions that drive business growth.</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>8</h3>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>90%</h3>
+                            <p>Client Satisfaction</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>3</h3>
+                            <p>Expert Team Members</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>24/7</h3>
+                            <p>Support & Maintenance</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-visual">
+                    <div class="visual-card card-1">
+                        <h4>Agile Development</h4>
+                        <p>Iterative approach that delivers value quickly and adapts to changes.</p>
+                    </div>
+                    <div class="visual-card card-2">
+                        <h4>Quality Assurance</h4>
+                        <p>Comprehensive testing to ensure reliability and performance.</p>
+                    </div>
+                    <div class="visual-card card-3">
+                        <h4>Continuous Support</h4>
+                        <p>Ongoing maintenance and updates to keep your software current.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2>Ready to Bring Your Idea to Life?</h2>
+            <p>Contact us today to discuss your project. Our team is ready to help you transform your vision into a powerful software solution.</p>
+            <a href="mailto:contact@motiontech.com" class="btn">Start Your Project</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Motion Tech</h3>
+                    <p>Transforming ideas into innovative digital solutions through cutting-edge software development.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <div class="footer-links">
+                        <a href="#services">Web Applications</a>
+                        <a href="#services">Desktop Software</a>
+                        <a href="#services">AI & ML Models</a>
+                        <a href="#services">Mobile Apps</a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <div class="footer-links">
+                        <a href="#about">About Us</a>
+                        <a href="#contact">Contact</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Blog</a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <div class="footer-links">
+                        <a href="mailto:contact@motiontech.com">contact@motiontech.com</a>
+                        <a href="tel:+2437046896164">+243 704 689 6164</a>
+                        <a href="#">Malari By Pass</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 Motion Tech. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ========================
+        // AUTHENTICATION CHECK (ALLOWS VISITORS)
+        // ========================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const authStatus = localStorage.getItem('motionTechAuth');
+            const authButtonContainer = document.getElementById('authButtonContainer');
+            
+            // Always allow access - no redirects
+            // Show appropriate button based on auth status
+            if (authStatus === 'true') {
+                // User is logged in
+                const userData = JSON.parse(localStorage.getItem('motionTechUser') || '{}');
+                authButtonContainer.innerHTML = `
+                    <a href="#" id="logoutBtn" class="btn" style="padding: 8px 20px; font-size: 14px; background: var(--accent);">
+                        <i class="fas fa-user"></i> ${userData.name || 'Account'} | Logout
+                    </a>
+                `;
+                
+                // Show welcome message
+                showWelcomeMessage(userData.name || 'User');
+            } else if (authStatus === 'visitor') {
+                // Visitor access
+                authButtonContainer.innerHTML = `
+                    <a href="login.html" class="btn" style="padding: 8px 20px; font-size: 14px; background: var(--gray);">
+                        <i class="fas fa-eye"></i> Visitor | Login
+                    </a>
+                `;
+                
+                // Show visitor banner
+                showVisitorBanner();
+            } else {
+                // No auth status - treat as visitor
+                localStorage.setItem('motionTechAuth', 'visitor');
+                showVisitorBanner();
+            }
+            
+            // Handle logout if button exists
+            setTimeout(() => {
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logoutUser();
+                    });
+                }
+            }, 100);
+        });
+        
+        // ========================
+        // VISITOR BANNER FUNCTIONS
+        // ========================
+        
+        function showVisitorBanner() {
+            const banner = document.getElementById('visitorBanner');
+            banner.style.display = 'flex';
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                closeVisitorBanner();
+            }, 10000);
+        }
+        
+        function closeVisitorBanner() {
+            const banner = document.getElementById('visitorBanner');
+            banner.style.animation = 'slideOut 0.5s ease';
+            setTimeout(() => {
+                banner.style.display = 'none';
+                banner.style.animation = '';
+            }, 500);
+        }
+        
+        // ========================
+        // WELCOME MESSAGE FUNCTION
+        // ========================
+        
+        function showWelcomeMessage(userName) {
+            setTimeout(() => {
+                const welcomeMsg = document.createElement('div');
+                welcomeMsg.className = 'visitor-banner';
+                welcomeMsg.style.background = 'var(--primary)';
+                welcomeMsg.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <span>Welcome back, ${userName}!</span>
+                    <button class="close-btn" onclick="this.parentElement.style.animation='slideOut 0.5s ease'; setTimeout(() => this.parentElement.remove(), 500)">&times;</button>
+                `;
+                document.body.appendChild(welcomeMsg);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (welcomeMsg.parentElement) {
+                        welcomeMsg.style.animation = 'slideOut 0.5s ease';
+                        setTimeout(() => {
+                            if (welcomeMsg.parentElement) {
+                                welcomeMsg.remove();
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            }, 1000);
+        }
+        
+        // ========================
+        // LOGOUT FUNCTION
+        // ========================
+        
+        function logoutUser() {
+            // Clear authentication data
+            localStorage.removeItem('motionTechAuth');
+            localStorage.removeItem('motionTechUser');
+            sessionStorage.removeItem('redirectAfterLogin');
+            
+            // Show logout message
+            alert('Logged out successfully! You will continue as a visitor.');
+            
+            // Refresh page to update UI
+            window.location.reload();
+        }
+        
+        // ========================
+        // HEADER SCROLL EFFECT
+        // ========================
+        
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ========================
+        // MOBILE MENU TOGGLE
+        // ========================
+        
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.backgroundColor = 'white';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.padding = '20px';
+                navLinks.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
+                navLinks.style.gap = '20px';
+            }
+        });
+
+        // ========================
+        // SMOOTH SCROLL
+        // ========================
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if(window.innerWidth <= 768) {
+                        navLinks.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // ========================
+        // SCROLL ANIMATIONS
+        // ========================
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.service-card, .about-text, .about-visual').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // ========================
+        // DIRECT ACCESS PROTECTION
+        // ========================
+        
+        // If someone tries to access this page directly without coming from index.html,
+        // set them as a visitor automatically
+        if (!document.referrer.includes('index.html') && 
+            !document.referrer.includes('login.html') && 
+            !localStorage.getItem('motionTechAuth')) {
+            localStorage.setItem('motionTechAuth', 'visitor');
+            console.log('Direct access detected - set as visitor');
+        }
+    </script>
+</body>
+</html>
