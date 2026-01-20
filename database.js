@@ -38,9 +38,9 @@ const MotionTechDB = {
             },
             {
                 id: 2,
-                username: "demo",
-                email: "demo@motiontech.com",
-                password: "demo123",
+                username: "motion",
+                email: "motiontech.com",
+                password: "motion123",
                 firstName: "Demo",
                 lastName: "Client",
                 name: "Demo Client",
@@ -236,5 +236,6 @@ const MotionTechDB = {
 // Auto-initialize
 MotionTechDB.init();
 window.MotionTechDB = MotionTechDB;
+
 
 console.log("✅ Motion Tech Database System Ready!");
