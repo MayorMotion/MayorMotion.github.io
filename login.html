@@ -404,7 +404,7 @@
     <div class="login-container">
         <!-- Brand logo -->
         <div class="brand-logo">
-            <a href="index.html">
+            <a href="main.html">
                 <i class="fas fa-bolt"></i> Motion Tech
             </a>
             <p>Client Portal</p>
@@ -485,243 +485,97 @@
         </div>
     </div>
 
-    <script>
-        // ========================
-        // CONNECT TO REGISTRATION
-        // ========================
-        
-        // Check URL parameters for registration success
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user just registered
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('registered') === 'true') {
-                // Show registration success message
-                showSuccess('Account created successfully! You can now login.');
-                
-                // Auto-fill username if available
-                const newlyRegisteredUser = localStorage.getItem('newlyRegisteredUser');
-                if(newlyRegisteredUser) {
-                    document.getElementById('username').value = newlyRegisteredUser;
-                    document.getElementById('username').dispatchEvent(new Event('input'));
-                    localStorage.removeItem('newlyRegisteredUser');
-                }
-                
-                // Remove the URL parameter
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        });
+ <!-- Add this right after the database.js script import -->
+<script src="database.js"></script>
 
-        // ========================
-        // USER DATABASE FUNCTIONS
-        // ========================
-        
-        // Get existing users from localStorage
-        function getUserDatabase() {
-            const storedUsers = localStorage.getItem('motionTechUsers');
-            const defaultUsers = [
-                {
-                    id: 1,
-                    username: "admin",
-                    email: "admin@motiontech.com",
-                    password: "admin123",
-                    name: "System Administrator",
-                    role: "admin",
-                    createdAt: new Date().toISOString()
-                },
-                {
-                    id: 2,
-                    username: "demo",
-                    email: "demo@motiontech.com",
-                    password: "demo123",
-                    name: "Demo Client",
-                    role: "client",
-                    company: "Demo Corp",
-                    createdAt: new Date().toISOString()
-                }
-            ];
-            
-            if(storedUsers) {
-                return JSON.parse(storedUsers);
-            } else {
-                localStorage.setItem('motionTechUsers', JSON.stringify(defaultUsers));
-                return defaultUsers;
-            }
-        }
-        
-        // Function to validate user credentials
-        function authenticateUser(username, password) {
-            const users = getUserDatabase();
-            const inputUsername = username.toLowerCase().trim();
-            
-            // Check if user exists in database
-            const user = users.find(user => 
-                (user.username.toLowerCase() === inputUsername || 
-                 user.email.toLowerCase() === inputUsername) && 
-                user.password === password
-            );
-            
-            return user || null;
-        }
-        
-        // ========================
-        // UI HELPER FUNCTIONS
-        // ========================
-        
-        function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+<script>
+    // ========================
+    // UI HELPER FUNCTIONS
+    // ========================
+    
+    function showError(message) {
+        const errorEl = document.getElementById('errorMessage');
+        if (errorEl) {
+            const errorText = errorEl.querySelector('span') || errorEl;
+            errorText.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
             errorEl.classList.add('show');
             
             setTimeout(() => {
                 errorEl.classList.remove('show');
             }, 5000);
+        } else {
+            alert(message); // Fallback
         }
-        
-        function showSuccess(message) {
-            const successEl = document.getElementById('successMessage');
-            successEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    }
+    
+    function showSuccess(message) {
+        const successEl = document.getElementById('successMessage');
+        if (successEl) {
+            const successText = successEl.querySelector('span') || successEl;
+            successText.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             successEl.classList.add('show');
         }
+    }
+    
+    // ========================
+    // PAGE INITIALIZATION
+    // ========================
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🔑 Login page loaded");
         
-        // After successful login
-        function handleLoginSuccess(user) {
-            // Store user session data
-            localStorage.setItem('motionTechAuth', 'true');
-            localStorage.setItem('motionTechUser', JSON.stringify({
-                id: user.id,
-                username: user.username,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                company: user.company || ''
-            }));
-            
-            // Show success message
-            showSuccess(`Welcome back, ${user.name}!`);
-            
-            // Get redirect URL or default to main.html
-            const redirectUrl = sessionStorage.getItem('redirectAfterLogin') || 'main.html';
-            
-            // Clear redirect storage
-            sessionStorage.removeItem('redirectAfterLogin');
-            
-            // Update button to show success
-            const submitBtn = document.querySelector('.submit-btn');
-            submitBtn.innerHTML = '<i class="fas fa-check"></i> LOGIN SUCCESSFUL!';
-            submitBtn.style.background = '#10b981';
-            submitBtn.style.borderColor = '#10b981';
-            submitBtn.style.color = 'white';
-            submitBtn.disabled = true;
-            
-            // Hide error message if visible
-            document.getElementById('errorMessage').classList.remove('show');
-            
-            // Redirect after delay
-            setTimeout(() => {
-                window.location.href = redirectUrl;
-            }, 2000);
-        }
+        // Initialize floating labels
+        initFloatingLabels();
         
-        // ========================
-        // FORM EVENT HANDLERS
-        // ========================
+        // Check URL parameters for registration success
+        checkRegistrationSuccess();
         
-        // Fix for floating labels
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Log database status
+        logDatabaseStatus();
+    });
+    
+    function initFloatingLabels() {
         document.querySelectorAll('.field input').forEach(input => {
             input.setAttribute('placeholder', ' ');
-            
             if (input.value) {
                 input.dispatchEvent(new Event('input'));
             }
         });
-        
-        // Add visitor access option
-        function allowVisitorAccess() {
-            localStorage.setItem('motionTechAuth', 'visitor');
+    }
+    
+    function checkRegistrationSuccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.get('registered') === 'true') {
+            const username = urlParams.get('username');
             
-            const visitorBtn = document.getElementById('visitorBtn');
-            visitorBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> REDIRECTING...';
-            visitorBtn.disabled = true;
+            // Show registration success message
+            showSuccess('Account created successfully! You can now login.');
             
-            setTimeout(() => {
-                window.location.href = 'main.html';
-            }, 1000);
+            // Auto-fill username if available
+            if(username) {
+                document.getElementById('username').value = username;
+                document.getElementById('username').dispatchEvent(new Event('input'));
+            }
+            
+            console.log("✅ User just registered:", username);
+            
+            // Remove the URL parameter
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
+    }
+    
+    function setupEventListeners() {
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
         
-        // Login form submit handler
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Clear any previous error messages
-            document.getElementById('errorMessage').classList.remove('show');
-            
-            // Validate inputs
-            if(!username || !password) {
-                showError('Please enter both username and password');
-                return;
-            }
-            
-            // Show loading state
-            const submitBtn = document.querySelector('.submit-btn');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AUTHENTICATING...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                // Authenticate user
-                const authenticatedUser = authenticateUser(username, password);
-                
-                if(authenticatedUser) {
-                    // Login successful
-                    handleLoginSuccess(authenticatedUser);
-                } else {
-                    // Login failed
-                    showError('Invalid username or password. Please try again.');
-                    
-                    // Reset button
-                    submitBtn.innerHTML = '<i class="fas fa-lock"></i> SIGN IN';
-                    submitBtn.disabled = false;
-                    
-                    // Clear password field
-                    document.getElementById('password').value = '';
-                    document.getElementById('password').focus();
-                    
-                    // Shake animation on form
-                    document.querySelector('.glass-form').style.animation = 'shake 0.5s ease-in-out';
-                    setTimeout(() => {
-                        document.querySelector('.glass-form').style.animation = '';
-                    }, 500);
-                }
-            }, 1500);
-        });
+        // Visitor button
+        document.getElementById('visitorBtn').addEventListener('click', handleVisitorAccess);
         
-        // Visitor button handler
-        document.getElementById('visitorBtn').addEventListener('click', function() {
-            allowVisitorAccess();
-        });
-        
-        // Forgot password handler
-        document.querySelector('.forgot-password').addEventListener('click', function(e) {
-            e.preventDefault();
-            const email = prompt('Enter your registered email address:');
-            
-            if (email) {
-                // Check if email exists in database
-                const users = getUserDatabase();
-                const user = users.find(user => 
-                    user.email.toLowerCase() === email.toLowerCase().trim()
-                );
-                
-                if(user) {
-                    alert(`Password reset link sent to ${email}\n\nDemo: Your password is "${user.password}"`);
-                } else {
-                    alert(`No account found with email: ${email}`);
-                }
-            }
-        });
+        // Forgot password
+        document.querySelector('.forgot-password').addEventListener('click', handleForgotPassword);
         
         // Enter key support
         document.getElementById('password').addEventListener('keypress', function(e) {
@@ -730,7 +584,7 @@
             }
         });
         
-        // Clear error message when user starts typing
+        // Clear errors when typing
         document.getElementById('username').addEventListener('input', function() {
             document.getElementById('errorMessage').classList.remove('show');
         });
@@ -739,39 +593,254 @@
             document.getElementById('errorMessage').classList.remove('show');
         });
         
-        // "Remember me" functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const rememberCheckbox = document.getElementById('remember');
-            const usernameField = document.getElementById('username');
-            
-            // Check if we have saved credentials
-            const savedUsername = localStorage.getItem('motionTechRememberUsername');
-            if(savedUsername && rememberCheckbox) {
-                usernameField.value = savedUsername;
-                rememberCheckbox.checked = true;
-                
-                // Trigger the floating label effect
-                usernameField.dispatchEvent(new Event('input'));
-            }
-            
-            // Save username when "Remember me" is checked
-            if(rememberCheckbox) {
-                rememberCheckbox.addEventListener('change', function() {
-                    if(this.checked && usernameField.value) {
-                        localStorage.setItem('motionTechRememberUsername', usernameField.value);
-                    } else {
-                        localStorage.removeItem('motionTechRememberUsername');
-                    }
-                });
-            }
-            
-            // Auto-save username when typing if "Remember me" is checked
-            usernameField.addEventListener('input', function() {
-                if(rememberCheckbox && rememberCheckbox.checked && this.value) {
-                    localStorage.setItem('motionTechRememberUsername', this.value);
+        // Remember me functionality
+        setupRememberMe();
+    }
+    
+    function setupRememberMe() {
+        const rememberCheckbox = document.getElementById('remember');
+        const usernameField = document.getElementById('username');
+        
+        // Check if we have saved credentials
+        const savedUsername = localStorage.getItem('motionTechRememberUsername');
+        if(savedUsername && rememberCheckbox) {
+            usernameField.value = savedUsername;
+            rememberCheckbox.checked = true;
+            usernameField.dispatchEvent(new Event('input'));
+        }
+        
+        // Save username when "Remember me" is checked
+        if(rememberCheckbox) {
+            rememberCheckbox.addEventListener('change', function() {
+                if(this.checked && usernameField.value) {
+                    localStorage.setItem('motionTechRememberUsername', usernameField.value);
+                } else {
+                    localStorage.removeItem('motionTechRememberUsername');
                 }
             });
+        }
+        
+        // Auto-save username when typing if "Remember me" is checked
+        usernameField.addEventListener('input', function() {
+            if(rememberCheckbox && rememberCheckbox.checked && this.value) {
+                localStorage.setItem('motionTechRememberUsername', this.value);
+            }
         });
-    </script>
+    }
+    
+    function logDatabaseStatus() {
+        if (typeof MotionTechDB !== 'undefined') {
+            console.log("📊 Database Status:");
+            console.log("Total Users:", MotionTechDB.getUserCount());
+            console.log("All Users:", MotionTechDB.getUsers());
+        } else {
+            console.error("❌ Database not loaded!");
+        }
+    }
+    
+   // ========================
+// LOGIN HANDLER (FIXED VERSION)
+// ========================
+
+async function handleLogin(e) {
+    e.preventDefault();
+    console.log("🔐 Login attempt");
+    
+    const identifier = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    
+    // Clear any previous error messages
+    document.getElementById('errorMessage').classList.remove('show');
+    
+    // Validate inputs
+    if(!identifier || !password) {
+        showError('Please enter both username/email and password');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = document.querySelector('.submit-btn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AUTHENTICATING...';
+    submitBtn.disabled = true;
+    
+    // Simulate API call delay
+    setTimeout(() => {
+        // Check if database is available
+        if (typeof MotionTechDB === 'undefined') {
+            showError('Database system not available. Please refresh.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            return;
+        }
+        
+        // Authenticate user using the shared database
+        console.log("🔄 Authenticating:", identifier);
+        const authResult = MotionTechDB.authenticate(identifier, password);
+        
+        if(authResult.success) {
+            // LOGIN SUCCESSFUL
+            console.log("✅ Login successful for:", authResult.user.username);
+            
+            // Store user session
+            localStorage.setItem('motionTechAuth', 'true');
+            localStorage.setItem('motionTechUser', JSON.stringify({
+                id: authResult.user.id,
+                username: authResult.user.username,
+                name: authResult.user.name,
+                email: authResult.user.email,
+                role: authResult.user.role,
+                company: authResult.user.company || ''
+            }));
+            
+            // Note: updateLastLogin is now called INSIDE the authenticate function
+            // No need to call it separately!
+            
+            // Show success message
+            showSuccess(`Welcome back, ${authResult.user.name}!`);
+            
+            // Get redirect URL or default to main.html
+            const redirectUrl = sessionStorage.getItem('redirectAfterLogin') || 'main.html';
+            
+            // Clear redirect storage
+            sessionStorage.removeItem('redirectAfterLogin');
+            
+            // Update button to show success
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> LOGIN SUCCESSFUL!';
+            submitBtn.style.background = '#10b981';
+            submitBtn.style.borderColor = '#10b981';
+            submitBtn.style.color = 'white';
+            submitBtn.disabled = true;
+            
+            // Redirect after delay
+            setTimeout(() => {
+                console.log("🚀 Redirecting to main website...");
+                window.location.href = redirectUrl;
+            }, 2000);
+            
+        } else {
+            // LOGIN FAILED
+            console.log("❌ Login failed:", authResult.message);
+            showError(authResult.message || 'Invalid credentials');
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            // Clear password field
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+            
+            // Shake animation on form
+            const glassForm = document.querySelector('.glass-form');
+            glassForm.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                glassForm.style.animation = '';
+            }, 500);
+        }
+    }, 1500);
+}             
+                // Redirect after delay
+                setTimeout(() => {
+                    console.log("🚀 Redirecting to main website...");
+                    window.location.href = redirectUrl;
+                }, 2000);
+                
+                
+    
+    // ========================
+    // VISITOR ACCESS
+    // ========================
+    
+    function handleVisitorAccess() {
+        const visitorBtn = document.getElementById('visitorBtn');
+        const originalText = visitorBtn.innerHTML;
+        
+        visitorBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> REDIRECTING...';
+        visitorBtn.disabled = true;
+        
+        // Set visitor flag
+        localStorage.setItem('motionTechAuth', 'visitor');
+        
+        // Redirect after delay
+        setTimeout(() => {
+            console.log("👁️ Redirecting as visitor...");
+            window.location.href = 'main.html';
+        }, 1000);
+    }
+    
+    // ========================
+    // FORGOT PASSWORD
+    // ========================
+    
+    function handleForgotPassword(e) {
+        e.preventDefault();
+        
+        const email = prompt('Enter your registered email address:');
+        if (!email) return;
+        
+        // Check if email exists in database
+        if (typeof MotionTechDB !== 'undefined') {
+            const user = MotionTechDB.findUserByEmail(email);
+            
+            if(user) {
+                // For demo purposes - show password
+                alert(`Password reset instructions sent to ${email}\n\nFor demo purposes, your password is: "${user.password}"`);
+            } else {
+                alert(`No account found with email: ${email}`);
+            }
+        } else {
+            alert('Database not available. Please try again later.');
+        }
+    }
+    
+    // ========================
+    // DATABASE DEBUG (Optional)
+    // ========================
+    
+    // Add this for debugging (call from console)
+    window.debugLogin = function() {
+        console.log("=== LOGIN DEBUG INFO ===");
+        console.log("Database loaded:", typeof MotionTechDB !== 'undefined');
+        console.log("Total users:", MotionTechDB.getUserCount());
+        console.log("All users:", MotionTechDB.getUsers());
+        console.log("Current auth:", localStorage.getItem('motionTechAuth'));
+        console.log("Current user:", localStorage.getItem('motionTechUser'));
+        console.log("=========================");
+    };
+</script>
+
+<!-- Add this before closing body tag -->
+<div id="debugInfo" style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; font-size: 12px; z-index: 9999; display: none;">
+    <strong>Debug Info</strong><br>
+    Database: <span id="dbStatus">❌</span><br>
+    Users: <span id="userCount">0</span><br>
+    <button onclick="testAuth()" style="margin-top: 5px; padding: 2px 5px; font-size: 10px;">Test Auth</button>
+</div>
+
+<script>
+    // Show debug panel
+    document.addEventListener('DOMContentLoaded', function() {
+        const debugEl = document.getElementById('debugInfo');
+        const dbStatus = document.getElementById('dbStatus');
+        const userCount = document.getElementById('userCount');
+        
+        if (typeof MotionTechDB !== 'undefined') {
+            dbStatus.textContent = '✅';
+            userCount.textContent = MotionTechDB.getUserCount();
+            debugEl.style.display = 'block';
+        }
+    });
+    
+    // Test authentication
+    function testAuth() {
+        if (typeof MotionTechDB !== 'undefined') {
+            const testResult = MotionTechDB.authenticate('admin', 'admin123');
+            alert(`Test auth: ${testResult.success ? 'SUCCESS' : 'FAILED'}\nUsers in DB: ${MotionTechDB.getUserCount()}`);
+        } else {
+            alert('Database not loaded!');
+        }
+    }
+</script>
 </body>
 </html>

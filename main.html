@@ -1037,5 +1037,53 @@
             console.log('Direct access detected - set as visitor');
         }
     </script>
+
+    <!-- Add this to main.html (before closing body tag) -->
+<div id="debugPanel" style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; font-size: 12px; z-index: 9999; display: none;">
+    <strong>Database Debug</strong><br>
+    Users: <span id="debugUserCount">0</span><br>
+    Last Update: <span id="debugLastUpdate">-</span>
+    <button onclick="refreshDebugInfo()" style="margin-top: 5px; padding: 2px 5px; font-size: 10px;">Refresh</button>
+    <button onclick="showAllUsers()" style="margin-top: 5px; padding: 2px 5px; font-size: 10px;">Show Users</button>
+</div>
+
+<script src="database.js"></script>
+<script>
+    // Debug functions
+    function refreshDebugInfo() {
+        if (typeof MotionTechDB !== 'undefined') {
+            document.getElementById('debugUserCount').textContent = MotionTechDB.getUserCount();
+            document.getElementById('debugLastUpdate').textContent = new Date().toLocaleTimeString();
+        }
+    }
+    
+    function showAllUsers() {
+        if (typeof MotionTechDB !== 'undefined') {
+            const users = MotionTechDB.getUsers();
+            console.log("=== ALL REGISTERED USERS ===");
+            users.forEach(user => {
+                console.log(`ID: ${user.id}, Username: ${user.username}, Email: ${user.email}, Name: ${user.name}`);
+            });
+            console.log("=============================");
+            alert(`Total users: ${users.length}\nCheck console for details.`);
+        }
+    }
+    
+    // Show debug panel (for testing only - remove in production)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show debug panel
+        document.getElementById('debugPanel').style.display = 'block';
+        refreshDebugInfo();
+        
+        // Log database info
+        console.log("=== Main Website - Database Status ===");
+        console.log("Total Registered Users:", MotionTechDB.getUserCount());
+        console.log("Database Users:", MotionTechDB.getUsers());
+        console.log("Current Auth Status:", localStorage.getItem('motionTechAuth'));
+        console.log("Current User:", localStorage.getItem('motionTechUser'));
+        console.log("=====================================");
+    });
+</script>
+
 </body>
 </html>

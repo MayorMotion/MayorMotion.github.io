@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Database</title>
+</head>
+<body>
+    <h1>Motion Tech Database Test</h1>
+    
+    <button onclick="testDB()">Test Database Connection</button>
+    <button onclick="showUsers()">Show All Users</button>
+    <button onclick="addTestUser()">Add Test User</button>
+    <button onclick="clearDB()">Clear Database</button>
+    
+    <div id="output" style="margin-top: 20px; padding: 10px; background: #f0f0f0;"></div>
+    
+    <script src="database.js"></script>
+    <script>
+        function log(msg) {
+            document.getElementById('output').innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+        
+        function testDB() {
+            log("🧪 Testing database...");
+            if (typeof MotionTechDB === 'undefined') {
+                log("❌ ERROR: MotionTechDB not defined!");
+                return;
+            }
+            
+            const users = MotionTechDB.getUsers();
+            log(`✅ Database connected! Total users: ${users.length}`);
+        }
+        
+        function showUsers() {
+            log("📋 All users in database:");
+            const users = MotionTechDB.getUsers();
+            users.forEach(user => {
+                log(`• ${user.username} (${user.email}) - ${user.name}`);
+            });
+        }
+        
+        function addTestUser() {
+            const testUser = {
+                firstName: "Test",
+                lastName: "User",
+                email: "test@test.com",
+                username: "testuser",
+                password: "test123",
+                company: "Test Company"
+            };
+            
+            log("➕ Adding test user...");
+            const result = MotionTechDB.addUser(testUser);
+            
+            if (result.success) {
+                log(`✅ Test user added: ${result.user.username}`);
+            } else {
+                log(`❌ Failed: ${result.message}`);
+            }
+        }
+        
+        function clearDB() {
+            localStorage.clear();
+            log("🗑️ LocalStorage cleared. Refresh page to reinitialize database.");
+        }
+    </script>
+</body>
+</html>
